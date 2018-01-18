@@ -48,20 +48,17 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Zebble.Android, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zebble.4.2.376\lib\MonoAndroid10\Zebble.Android.dll</HintPath>
+      <HintPath>..\packages\Zebble.4.3.100\lib\MonoAndroid10\Zebble.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeviceLocation.cs" />
-    <Compile Include="DeviceLocation.GeolocationContinuousListener.cs" />
-    <Compile Include="DeviceLocation.GeolocationSingleListener.cs" />
-    <Compile Include="DeviceLocation.LaunchDirections.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Zebble.exe" />
+    <Compile Include="Location.cs" />
+    <Compile Include="Location.GeolocationContinuousListener.cs" />
+    <Compile Include="Location.GeolocationSingleListener.cs" />
+    <Compile Include="Location.LaunchDirections.cs" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" Condition="Exists('..\Shared\Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

@@ -1,4 +1,4 @@
-namespace Zebble
+namespace Zebble.Device
 {
     using System;
     using System.Linq;
@@ -7,11 +7,11 @@ namespace Zebble
     using Foundation;
     using MapKit;
 
-    partial class DeviceLocation
+    partial class Location
     {
-        async Task DoLaunchDirections(NavigationAddress destination)
+        static async Task DoLaunchDirections(NavigationAddress destination)
         {
-            await Device.UIThread.Run(async () =>
+            await Thread.UI.Run(async () =>
             {
                 CLLocationCoordinate2D? coords;
 
@@ -26,7 +26,7 @@ namespace Zebble
             });
         }
 
-        async Task<CLLocationCoordinate2D?> FindCoordinates(NavigationAddress address)
+        static async Task<CLLocationCoordinate2D?> FindCoordinates(NavigationAddress address)
         {
             CLPlacemark[] placemarks = null;
             var placemarkAddress =

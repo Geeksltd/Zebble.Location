@@ -1,21 +1,20 @@
-﻿namespace Zebble
+﻿namespace Zebble.Device
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Windows.Devices.Geolocation;
     using Windows.Foundation;
-    using Zebble.NativeImpl;
 
-    partial class DeviceLocation
+    partial class Location
     {
-        Geolocator locator;
+        static Geolocator locator;
 
-        public async Task<bool> IsSupported() => await GetGeolocatorStatus() != PositionStatus.NotAvailable;
+        public static async Task<bool> IsSupported() => await GetGeolocatorStatus() != PositionStatus.NotAvailable;
 
-        public async Task<bool> IsEnabled() => new[] { PositionStatus.NotAvailable, PositionStatus.Disabled }.Lacks(await GetGeolocatorStatus());
+        public static async Task<bool> IsEnabled() => new[] { PositionStatus.NotAvailable, PositionStatus.Disabled }.Lacks(await GetGeolocatorStatus());
 
-        async Task<Services.GeoPosition> TryGetCurrentPosition(double _, int timeout)
+        static async Task<Services.GeoPosition> TryGetCurrentPosition(double _, int timeout)
         {
             if (EnvironmentSimulator.Location != null) return EnvironmentSimulator.Location;
 
@@ -45,7 +44,7 @@
             return await source.Task;
         }
 
-        Task DoStartTracking(LocationTrackingSettings settings)
+        static Task DoStartTracking(LocationTrackingSettings settings)
         {
             IsTracking = true;
 
@@ -57,7 +56,7 @@
             return Task.CompletedTask;
         }
 
-        public Task<bool> StopTracking()
+        public static Task<bool> StopTracking()
         {
             if (!IsTracking) return Task.FromResult(result: true);
 
@@ -68,31 +67,31 @@
             return Task.FromResult(result: true);
         }
 
-        async void OnLocatorStatusChanged(Geolocator sender, StatusChangedEventArgs args)
+        static async void OnLocatorStatusChanged(Geolocator sender, StatusChangedEventArgs args)
         {
             switch (args.Status)
             {
                 case PositionStatus.NoData:
                     await StopTracking();
-                    await Device.ThreadPool.Run(() => PositionError.Raise(new Exception(UNAVAILABLE_ERROR)));
+                    await Thread.Pool.Run(() => PositionError.Raise(new Exception(UNAVAILABLE_ERROR)));
                     return;
 
                 case PositionStatus.Disabled:
                     await StopTracking();
-                    await Device.ThreadPool.Run(() => PositionError.Raise(new Exception(UNAUTHORISED_ERROR)));
+                    await Thread.Pool.Run(() => PositionError.Raise(new Exception(UNAUTHORISED_ERROR)));
                     return;
 
                 default: return;
             }
         }
 
-        async void OnLocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        static async void OnLocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
             var pos = ToGeoPosition(args.Position);
-            await Device.ThreadPool.Run(() => PositionChanged.Raise(pos));
+            await Thread.Pool.Run(() => PositionChanged.Raise(pos));
         }
 
-        Geolocator Locator
+        static Geolocator Locator
         {
             get
             {
@@ -106,7 +105,7 @@
             }
         }
 
-        async Task<PositionStatus> GetGeolocatorStatus()
+        static async Task<PositionStatus> GetGeolocatorStatus()
         {
             var result = Locator.LocationStatus;
             while (result == PositionStatus.Initializing)

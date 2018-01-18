@@ -1,4 +1,4 @@
-namespace Zebble
+namespace Zebble.Device
 {
     using System;
     using System.Threading;
@@ -6,7 +6,7 @@ namespace Zebble
     using CoreLocation;
     using Foundation;
 
-    partial class DeviceLocation
+    partial class Location
     {
         internal class GeoLocationSingleUpdateDelegate : CLLocationManagerDelegate
         {

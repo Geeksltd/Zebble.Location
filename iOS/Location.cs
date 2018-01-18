@@ -1,26 +1,26 @@
-﻿namespace Zebble
+﻿namespace Zebble.Device
 {
     using System;
     using System.Threading.Tasks;
     using CoreLocation;
     using Foundation;
 
-    public partial class DeviceLocation
+    public partial class Location
     {
-        bool IsDeferringUpdates;
-        CLLocationManager Manager;
-        LocationTrackingSettings CurrentTrackingSettings;
+        static bool IsDeferringUpdates;
+        static CLLocationManager Manager;
+        static LocationTrackingSettings CurrentTrackingSettings;
 
-        void OnDeferredUpdatedFinished(object sender, NSErrorEventArgs e)
+        static void OnDeferredUpdatedFinished(object sender, NSErrorEventArgs e)
         {
             IsDeferringUpdates = false;
         }
 
-        public Task<bool> IsSupported() => Task.FromResult(result: true); // all iOS devices support at least wifi geoDeviceLocation
+        public static Task<bool> IsSupported() => Task.FromResult(result: true); // all iOS devices support at least wifi geoDeviceLocation
 
-        public async Task<bool> IsEnabled() => await Device.Permissions.Check(DevicePermission.Location) == PermissionResult.Granted;
+        public static async Task<bool> IsEnabled() => await Device.Permissions.Check(Permission.Location) == PermissionResult.Granted;
 
-        async Task<Services.GeoPosition> TryGetCurrentPosition(double desiredAccuracy, int timeout)
+        static async Task<Services.GeoPosition> TryGetCurrentPosition(double desiredAccuracy, int timeout)
         {
             TaskCompletionSource<Services.GeoPosition> tcs;
 
@@ -29,7 +29,7 @@
                 var manager = await CreateManager();
                 if (manager == null) return null;
 
-                if (await Device.Permissions.Check(DevicePermission.BackgroundLocation) == PermissionResult.Granted)
+                if (await Device.Permissions.Check(Permission.BackgroundLocation) == PermissionResult.Granted)
                     manager.AllowsBackgroundLocationUpdates = true;
 
                 // We need a single update.
@@ -67,9 +67,9 @@
             return await tcs.Task;
         }
 
-        bool CanDeferLocationUpdate => Device.OS.IsAtLeastiOS(6);
+        static bool CanDeferLocationUpdate => Device.OS.IsAtLeastiOS(6);
 
-        async Task DoStartTracking(LocationTrackingSettings settings)
+        static async Task DoStartTracking(LocationTrackingSettings settings)
         {
             CurrentTrackingSettings = settings;
 
@@ -110,7 +110,7 @@
             else Manager.StartUpdatingLocation();
         }
 
-        public Task<bool> StopTracking()
+        public static Task<bool> StopTracking()
         {
             if (!IsTracking || Manager == null) return Task.FromResult(result: true);
 
@@ -124,13 +124,13 @@
             return Task.FromResult(result: true);
         }
 
-        async Task<CLLocationManager> CreateManager()
+        static async Task<CLLocationManager> CreateManager()
         {
             if (Manager != null) return Manager;
 
-            if (await Device.Permissions.Request(DevicePermission.Location) != PermissionResult.Granted) return null;
+            if (await Device.Permissions.Request(Permission.Location) != PermissionResult.Granted) return null;
 
-            await Device.UIThread.Run(() =>
+            await Thread.UI.Run(() =>
             {
                 Manager = new CLLocationManager();
                 Manager.AuthorizationChanged += OnAuthorizationChanged;
@@ -147,7 +147,7 @@
             return Manager;
         }
 
-        async void OnLocationsUpdated(object sender, CLLocationsUpdatedEventArgs e)
+        static async void OnLocationsUpdated(object sender, CLLocationsUpdatedEventArgs e)
         {
             foreach (var Location in e.Locations) await UpdatePosition(Location);
 
@@ -162,7 +162,7 @@
             }
         }
 
-        async Task UpdatePosition(CLLocation location)
+        static async Task UpdatePosition(CLLocation location)
         {
             var result = new Services.GeoPosition
             {
@@ -182,25 +182,25 @@
 
             if (location.Speed == -1) result.Speed = null;
 
-            await PositionChanged?.RaiseOn(Device.ThreadPool, result);
+            await PositionChanged?.RaiseOn(Thread.Pool, result);
             location.Dispose();
         }
 
-        async void OnFailed(object sender, NSErrorEventArgs e)
+        static async void OnFailed(object sender, NSErrorEventArgs e)
         {
             var error = (CLError)(int)e.Error.Code;
 
             if (error == CLError.Network)
-                await PositionError.RaiseOn(Device.ThreadPool, new Exception(UNAVAILABLE_ERROR));
+                await PositionError.RaiseOn(Thread.Pool, new Exception(UNAVAILABLE_ERROR));
 
             if (error == CLError.Denied)
-                await PositionError.RaiseOn(Device.ThreadPool, new Exception(UNAUTHORISED_ERROR));
+                await PositionError.RaiseOn(Thread.Pool, new Exception(UNAUTHORISED_ERROR));
         }
 
-        void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs e)
+        static void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs e)
         {
             if (e.Status == CLAuthorizationStatus.Denied || e.Status == CLAuthorizationStatus.Restricted)
-                PositionError.RaiseOn(Device.ThreadPool, new Exception(UNAUTHORISED_ERROR));
+                PositionError.RaiseOn(Thread.Pool, new Exception(UNAUTHORISED_ERROR));
         }
     }
 }

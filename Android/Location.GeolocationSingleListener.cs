@@ -1,4 +1,4 @@
-namespace Zebble
+namespace Zebble.Device
 {
     using System;
     using System.Collections.Generic;
@@ -6,12 +6,12 @@ namespace Zebble
     using Android.Locations;
     using Android.OS;
 
-    partial class DeviceLocation
+    partial class Location
     {
         internal class GeoLocationSingleListener : Java.Lang.Object, ILocationListener
         {
             readonly object LocationSync = new object();
-            Location BestLocation;
+            Android.Locations.Location BestLocation;
             Action OnFinished;
             float DesiredAccuracy;
             internal TaskCompletionSource<Services.GeoPosition> CompletionSource = new TaskCompletionSource<Services.GeoPosition>();
@@ -31,7 +31,7 @@ namespace Zebble
                  }).RunInParallel();
             }
 
-            void ILocationListener.OnLocationChanged(Location location)
+            void ILocationListener.OnLocationChanged(Android.Locations.Location location)
             {
                 if (location.Accuracy <= DesiredAccuracy)
                 {
@@ -71,7 +71,7 @@ namespace Zebble
                 }
             }
 
-            void Finish(Location location)
+            void Finish(Android.Locations.Location location)
             {
                 var position = location.ToGeoPosition();
                 OnFinished?.Invoke();

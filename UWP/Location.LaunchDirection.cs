@@ -1,12 +1,12 @@
-﻿namespace Zebble
+﻿namespace Zebble.Device
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
 
-    partial class DeviceLocation
+    partial class Location
     {
-        async Task DoLaunchDirections(NavigationAddress destination)
+        static async Task DoLaunchDirections(NavigationAddress destination)
         {
             string query;
 

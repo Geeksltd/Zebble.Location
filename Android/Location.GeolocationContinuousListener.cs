@@ -1,4 +1,4 @@
-namespace Zebble
+namespace Zebble.Device
 {
     using System;
     using System.Collections.Generic;
@@ -6,14 +6,14 @@ namespace Zebble
     using Android.Locations;
     using Android.OS;
 
-    partial class DeviceLocation
+    partial class Location
     {
         internal class GeoLocationContinuousListener : Java.Lang.Object, ILocationListener
         {
             HashSet<string> ActiveProviders = new HashSet<string>();
             LocationManager Manager;
             string ActiveProvider;
-            Location LatestLocation;
+            Android.Locations.Location LatestLocation;
             TimeSpan ReportIntervals;
 
             public readonly AsyncEvent<Exception> PositionError = new AsyncEvent<Exception>();
@@ -28,7 +28,7 @@ namespace Zebble
                     if (manager.IsProviderEnabled(p)) ActiveProviders.Add(p);
             }
 
-            public void OnLocationChanged(Location location)
+            public void OnLocationChanged(Android.Locations.Location location)
             {
                 if (location.Provider != ActiveProvider)
                 {
@@ -50,7 +50,7 @@ namespace Zebble
                 Interlocked.Exchange(ref LatestLocation, location)?.Dispose();
 
                 var position = location.ToGeoPosition();
-                PositionChanged.RaiseOn(Device.ThreadPool, position);
+                PositionChanged.RaiseOn(Zebble.Thread.Pool, position);
             }
 
             public void OnProviderDisabled(string provider)
@@ -61,7 +61,7 @@ namespace Zebble
                 lock (ActiveProviders)
                 {
                     if (ActiveProviders.Remove(provider) && ActiveProviders.Count == 0)
-                        PositionError.RaiseOn(Device.ThreadPool, new Exception(UNAVAILABLE_ERROR));
+                        PositionError.RaiseOn(Zebble.Thread.Pool, new Exception(UNAVAILABLE_ERROR));
                 }
             }
 

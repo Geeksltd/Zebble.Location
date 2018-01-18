@@ -1,4 +1,4 @@
-namespace Zebble
+namespace Zebble.Device
 {
     using System;
     using System.Threading.Tasks;
@@ -7,11 +7,11 @@ namespace Zebble
     using Android.Locations;
     using System.Linq;
 
-    partial class DeviceLocation
+    partial class Location
     {
         const string BASE_URL = "http://" + "maps.google.com/maps?daddr=";
 
-        string ToUrl(NavigationAddress address)
+        static string ToUrl(NavigationAddress address)
         {
             if (address.HasGeoLocation())
                 return $"{address.Latitude},{address.Longitude}{address.Name.WithWrappers(" (", ")")}";
@@ -23,7 +23,7 @@ namespace Zebble
             }
         }
 
-        Address GetLocationFromAddress(string strAddress)
+        static Address GetLocationFromAddress(string strAddress)
         {
             using (var coder = new Geocoder(UIRuntime.CurrentActivity))
             {
@@ -32,7 +32,7 @@ namespace Zebble
             }
         }
 
-        Task DoLaunchDirections(NavigationAddress destination)
+        static Task DoLaunchDirections(NavigationAddress destination)
         {
             var url = $"{BASE_URL}{ToUrl(destination)}";
 
@@ -52,7 +52,7 @@ namespace Zebble
             throw new Exception(" There is no recognized map application.");
         }
 
-        bool Attempt(string url, string packageName = null, string className = null)
+        static bool Attempt(string url, string packageName = null, string className = null)
         {
             var uri = Android.Net.Uri.Parse(url);
 
