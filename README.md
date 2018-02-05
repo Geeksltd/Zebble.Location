@@ -1,4 +1,4 @@
-[logo]: https://raw.githubusercontent.com/Geeksltd/Zebble.Location/master/Shared/NuGet/Icon.png "Zebble.Sensors"
+[logo]: https://raw.githubusercontent.com/Geeksltd/Zebble.Location/master/Shared/NuGet/Icon.png "Zebble.Location"
 
 
 ## Zebble.Location
