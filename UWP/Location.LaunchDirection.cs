@@ -13,7 +13,7 @@
             if (destination.HasGeoLocation())
                 query = $"collection=point.{destination.Latitude}_{destination.Longitude}_{destination.Name}";
             else
-                query = "where=" + destination.GetAddressParts().Select(x => x.UrlEncode()).ToString(",").UrlEncode();
+                query = "where=" + destination.GetAddressParts().Select(x => x).ToString(",");
 
             var successful = await Windows.System.Launcher.LaunchUriAsync(new Uri("bingmaps:?" + query));
 
