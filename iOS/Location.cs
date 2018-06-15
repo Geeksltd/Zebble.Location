@@ -39,7 +39,11 @@
                 tcs = new TaskCompletionSource<Services.GeoPosition>(manager);
                 using (var singleListener = new GeoLocationSingleUpdateDelegate(manager, desiredAccuracy, timeout))
                 {
-                    manager.Delegate = singleListener;
+                    manager.AuthorizationChanged += (object sender, CLAuthorizationChangedEventArgs e) => singleListener.AuthorizationChanged(manager, e.Status);
+                    manager.Failed += (object sender, NSErrorEventArgs e) => singleListener.Failed(manager, e.Error);
+                    manager.UpdatedHeading += (object sender, CLHeadingUpdatedEventArgs e) => singleListener.UpdatedHeading(manager, e.NewHeading);
+                    manager.UpdatedLocation += (object sender, CLLocationUpdatedEventArgs e) => singleListener.UpdatedLocation(manager, e.NewLocation, e.OldLocation);
+
                     manager.StartUpdatingLocation();
                     var result = await singleListener.TaskSource.Task;
                 }
