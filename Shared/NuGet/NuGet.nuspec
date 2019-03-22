@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Zebble.Location</id>
-    <version>1.0.107</version>
+    <version>1.0.110</version>
     <title>Location plugin for Zebble (Xamarin)</title>
     <projectUrl>https://github.com/Geeksltd/Zebble.Location</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/Geeksltd/Zebble.Location/master/Shared/NuGet/Icon.png</iconUrl>
-    <copyright>Copyright © 2018 Geeks Ltd - All rights reserved.</copyright>
+    <copyright>Copyright © 2019 Geeks Ltd - All rights reserved.</copyright>
     <description>A Zebble plugin that enables you to find and track device geo location and also find directions.</description>
     <authors>Geeks Ltd</authors>
     <owners>Geeks Ltd</owners>
@@ -22,7 +22,6 @@
     <file src="..\..\lib\bin\ARM\Release\Zebble.Location.UWP.*" target="runtimes\win10-arm\lib\uap10.0" />
     <file src="..\..\lib\bin\x64\Release\Zebble.Location.UWP.*" target="runtimes\win10-x64\lib\uap10.0" />
     <file src="..\..\lib\bin\x86\Release\Zebble.Location.UWP.*" target="runtimes\win10-x86\lib\uap10.0" />
-
     <file src="..\..\lib\bin\Release\Zebble.Location.UWP.*" target="ref\uap10.0" />
   </files>
 </package>
