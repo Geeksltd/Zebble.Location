@@ -26,6 +26,8 @@
             if (silently && errorAction != OnError.Ignore && errorAction != OnError.Throw)
                 throw new Exception("If you want to get the DeviceLocation silently, ErrorAction must also be Ignore or Throw.");
 
+            await AskForPermission();
+
             if (!(await IsSupported()))
             {
                 await errorAction.Apply("Geo DeviceLocation is not supported on your device.");
@@ -66,12 +68,24 @@
             }
         }
 
+        static async Task AskForPermission()
+        {
+            if (await Permission.Location.Request() == PermissionResult.Granted)
+            {
+#if ANDROID
+                Init();
+#endif
+            }
+        }
+
         /// <summary>Starts tracking the user's DeviceLocation.</summary>
         /// <param name="silently">If set to true, then the tracking will start if DeviceLocation permission is already granted but there will be no user interaction (this can only be used in combination with OnError.Ignore or Throw). If set to false (default) then if necessary, the user will be prompted for granting permission, and in any case the specified error action will apply when there i any problem (GPS not supported or enabled on the device, permission denied, general error, etc.)</param>
         public static async Task<bool> StartTracking(LocationTrackingSettings settings = null, bool silently = false, OnError errorAction = OnError.Alert)
         {
             if (silently && errorAction != OnError.Ignore && errorAction != OnError.Throw)
                 throw new Exception("If you want to track the DeviceLocation silently, ErrorAction must be Ignore or Throw.");
+
+            await AskForPermission();
 
             if (silently && !await Permission.Location.IsGranted())
             {
@@ -108,6 +122,8 @@
         {
             try
             {
+                await AskForPermission();
+
                 await DoLaunchDirections(destination);
                 return true;
             }

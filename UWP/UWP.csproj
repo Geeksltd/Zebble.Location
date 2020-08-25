@@ -119,10 +119,10 @@
       <Version>6.0.6</Version>
     </PackageReference>
     <PackageReference Include="Zebble">
-      <Version>4.4.185</Version>
+      <Version>4.5.359</Version>
     </PackageReference>
     <PackageReference Include="Zebble.Sensors">
-      <Version>1.1.100</Version>
+      <Version>1.1.105</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" Condition="Exists('..\Shared\Shared.projitems')" />
@@ -144,12 +144,7 @@
     <Error Condition="!Exists('..\Shared\Shared.projitems')" Text="This project references Shared that are missing on this computer." />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>if $(PlatformName) == x86 (
-if not exist $(SolutionDir)lib\bin\Release mkdir $(SolutionDir)lib\bin\Release
-
-robocopy  $(SolutionDir)lib\bin\x86\Release $(SolutionDir)lib\bin\Release /COPYALL /E
-
-$(SolutionDir)Shared\NuGet\CorFlags.exe /32bitreq- $(SolutionDir)lib\bin\Release\Zebble.Location.UWP.dll
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

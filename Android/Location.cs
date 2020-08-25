@@ -16,6 +16,11 @@ namespace Zebble.Device
 
         static Location()
         {
+            Init();
+        }
+
+        internal static void Init()
+        {
             Manager = UIRuntime.GetService<LocationManager>(Context.LocationService);
             Providers = Manager.GetProviders(enabledOnly: false).Where(s => s != LocationManager.PassiveProvider).ToArray();
         }
