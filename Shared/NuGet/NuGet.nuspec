@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Zebble.Location</id>
-    <version>1.0.111</version>
+    <version>1.0.112</version>
     <title>Location plugin for Zebble (Xamarin)</title>
     <projectUrl>https://github.com/Geeksltd/Zebble.Location</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/Geeksltd/Zebble.Location/master/Shared/NuGet/Icon.png</iconUrl>
