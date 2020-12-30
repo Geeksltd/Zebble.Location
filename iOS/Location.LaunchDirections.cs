@@ -6,6 +6,7 @@ namespace Zebble.Device
     using CoreLocation;
     using Foundation;
     using MapKit;
+    using Olive;
 
     partial class Location
     {

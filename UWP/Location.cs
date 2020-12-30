@@ -5,6 +5,8 @@
     using System.Threading.Tasks;
     using Windows.Devices.Geolocation;
     using Windows.Foundation;
+    using Olive;
+    using Thread = Zebble.Thread;
 
     partial class Location
     {
@@ -134,17 +136,16 @@
         {
             readonly CancellationTokenSource Canceller = new CancellationTokenSource();
 
-            public Timeout(TimeSpan timeout, Action onIimeup)
+            public Timeout(TimeSpan timeout, Action onTimeup)
             {
                 Task.Delay(timeout, Canceller.Token)
                     .ContinueWith(t =>
                     {
-                        if (!t.IsCanceled) onIimeup?.Invoke();
+                        if (!t.IsCanceled) onTimeup?.Invoke();
                     });
             }
 
             public void Cancel() => Canceller.Cancel();
         }
-
     }
 }

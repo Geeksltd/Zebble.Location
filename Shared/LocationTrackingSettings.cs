@@ -1,6 +1,7 @@
 ﻿namespace Zebble.Device
 {
     using System;
+    using Olive;
 
     /// <summary>Currently used for iOS only, and ignored in other operating systems.</summary>
     public class LocationTrackingSettings

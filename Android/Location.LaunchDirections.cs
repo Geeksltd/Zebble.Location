@@ -6,6 +6,7 @@ namespace Zebble.Device
     using Android.Content;
     using Android.Locations;
     using System.Linq;
+    using Olive;
 
     partial class Location
     {

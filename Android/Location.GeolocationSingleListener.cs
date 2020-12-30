@@ -5,6 +5,7 @@ namespace Zebble.Device
     using System.Threading.Tasks;
     using Android.Locations;
     using Android.OS;
+    using Olive;
 
     partial class Location
     {
