@@ -14,14 +14,14 @@
 
         public static bool IsTracking { get; private set; }
 
-        public static readonly AsyncEvent<Services.GeoPosition> PositionChanged = new AsyncEvent<Services.GeoPosition>(ConcurrentEventRaisePolicy.Queue);
+        public static readonly AsyncEvent<GeoPosition> PositionChanged = new AsyncEvent<GeoPosition>(ConcurrentEventRaisePolicy.Queue);
         public static readonly AsyncEvent<Exception> PositionError = new AsyncEvent<Exception>();
 
         /// <summary>Returns the current user position.</summary>
         /// <param name="desiredAccuracy">In meters</param>
         /// <param name="timeout">Milliseconds</param>
         /// <param name="silently">If set to true, then the position will only be returned if it's available and request is previously granted but there will be no user interaction (this can only be used in combination with OnError.Ignore or Throw). If set to false (default) then if necessary, the user will be prompted for granting permission, and in any case the specified error action will apply when there i any problem (GPS not supported or enabled on the device, permission denied, general error, etc.)</param>
-        public static async Task<Services.GeoPosition> GetCurrentPosition(double desiredAccuracy = TEN_METERS, int timeout = FIVE_SECONDS, bool silently = false, OnError errorAction = OnError.Alert)
+        public static async Task<GeoPosition> GetCurrentPosition(double desiredAccuracy = TEN_METERS, int timeout = FIVE_SECONDS, bool silently = false, OnError errorAction = OnError.Alert)
         {
             if (silently && errorAction != OnError.Ignore && errorAction != OnError.Throw)
                 throw new Exception("If you want to get the DeviceLocation silently, ErrorAction must also be Ignore or Throw.");
@@ -134,5 +134,4 @@
             }
         }
     }
-
 }

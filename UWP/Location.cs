@@ -16,13 +16,13 @@
 
         public static async Task<bool> IsEnabled() => new[] { PositionStatus.NotAvailable, PositionStatus.Disabled }.Lacks(await GetGeolocatorStatus());
 
-        static async Task<Services.GeoPosition> TryGetCurrentPosition(double _, int timeout)
+        static async Task<GeoPosition> TryGetCurrentPosition(double _, int timeout)
         {
             if (EnvironmentSimulator.Location != null) return EnvironmentSimulator.Location;
 
             var pos = Locator.GetGeopositionAsync(TimeSpan.Zero, timeout.Milliseconds());
 
-            var source = new TaskCompletionSource<Services.GeoPosition>();
+            var source = new TaskCompletionSource<GeoPosition>();
             var found = false;
 
             Task.Delay(timeout.Milliseconds())
@@ -119,9 +119,9 @@
             return result;
         }
 
-        static Services.GeoPosition ToGeoPosition(Geoposition position)
+        static GeoPosition ToGeoPosition(Geoposition position)
         {
-            return new Services.GeoPosition
+            return new GeoPosition
             {
                 Latitude = position.Coordinate.Point.Position.Latitude,
                 Longitude = position.Coordinate.Point.Position.Longitude,

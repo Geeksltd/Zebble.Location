@@ -20,9 +20,9 @@
 
         public static async Task<bool> IsEnabled() => await Device.Permissions.Check(Permission.Location) == PermissionResult.Granted;
 
-        static async Task<Services.GeoPosition> TryGetCurrentPosition(double desiredAccuracy, int timeout)
+        static async Task<GeoPosition> TryGetCurrentPosition(double desiredAccuracy, int timeout)
         {
-            TaskCompletionSource<Services.GeoPosition> tcs;
+            TaskCompletionSource<GeoPosition> tcs;
 
             if (!IsTracking)
             {
@@ -36,7 +36,7 @@
                 if (Device.OS.IsAtLeastiOS(6))
                     manager.PausesLocationUpdatesAutomatically = false;
 
-                tcs = new TaskCompletionSource<Services.GeoPosition>(manager);
+                tcs = new TaskCompletionSource<GeoPosition>(manager);
                 using (var singleListener = new GeoLocationSingleUpdateDelegate(manager, desiredAccuracy, timeout))
                 {
                     manager.AuthorizationChanged += (object sender, CLAuthorizationChangedEventArgs e) => singleListener.AuthorizationChanged(manager, e.Status);
@@ -49,7 +49,7 @@
                 }
             }
 
-            tcs = new TaskCompletionSource<Services.GeoPosition>();
+            tcs = new TaskCompletionSource<GeoPosition>();
 
             Task gotError(Exception ex)
             {
@@ -60,7 +60,7 @@
 
             PositionError.Handle(gotError);
 
-            Task gotPosition(Services.GeoPosition position)
+            Task gotPosition(GeoPosition position)
             {
                 tcs.TrySetResult(position);
                 PositionChanged.RemoveHandler(gotPosition);
@@ -168,7 +168,7 @@
 
         static async Task UpdatePosition(CLLocation location)
         {
-            var result = new Services.GeoPosition
+            var result = new GeoPosition
             {
                 Accuracy = location.HorizontalAccuracy,
                 Latitude = location.Coordinate.Latitude,

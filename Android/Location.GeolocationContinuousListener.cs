@@ -5,6 +5,7 @@ namespace Zebble.Device
     using System.Threading;
     using Android.Locations;
     using Android.OS;
+    using Olive;
 
     partial class Location
     {
@@ -17,7 +18,7 @@ namespace Zebble.Device
             TimeSpan ReportIntervals;
 
             public readonly AsyncEvent<Exception> PositionError = new AsyncEvent<Exception>();
-            public readonly AsyncEvent<Services.GeoPosition> PositionChanged = new AsyncEvent<Services.GeoPosition>(ConcurrentEventRaisePolicy.Queue);
+            public readonly AsyncEvent<GeoPosition> PositionChanged = new AsyncEvent<GeoPosition>(ConcurrentEventRaisePolicy.Queue);
 
             public GeoLocationContinuousListener(LocationManager manager, TimeSpan reportIntervals, IList<string> providers)
             {
@@ -60,7 +61,7 @@ namespace Zebble.Device
 
                 lock (ActiveProviders)
                 {
-                    if (ActiveProviders.Remove(provider) && ActiveProviders.Count == 0)
+                    if (ActiveProviders.Remove(provider) && ActiveProviders.None())
                         PositionError.RaiseOn(Zebble.Thread.Pool, new Exception(UNAVAILABLE_ERROR));
                 }
             }
@@ -81,7 +82,7 @@ namespace Zebble.Device
                 }
             }
 
-            TimeSpan ToTime(long time) => new TimeSpan(TimeSpan.TicksPerMillisecond * time);
+            static TimeSpan ToTime(long time) => new TimeSpan(TimeSpan.TicksPerMillisecond * time);
         }
     }
 }

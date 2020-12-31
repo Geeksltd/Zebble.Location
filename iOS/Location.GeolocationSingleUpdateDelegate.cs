@@ -10,16 +10,16 @@ namespace Zebble.Device
     {
         internal class GeoLocationSingleUpdateDelegate : CLLocationManagerDelegate
         {
-            Services.GeoPosition Result = new Services.GeoPosition();
+            GeoPosition Result = new GeoPosition();
 
             double DesiredAccuracy;
-            public TaskCompletionSource<Services.GeoPosition> TaskSource;
+            public TaskCompletionSource<GeoPosition> TaskSource;
             CLLocationManager Manager;
 
             public GeoLocationSingleUpdateDelegate(CLLocationManager manager, double desiredAccuracy, int timeout)
             {
                 Manager = manager;
-                TaskSource = new TaskCompletionSource<Services.GeoPosition>(manager);
+                TaskSource = new TaskCompletionSource<GeoPosition>(manager);
                 DesiredAccuracy = desiredAccuracy;
 
                 Timer timer = null;
@@ -61,7 +61,7 @@ namespace Zebble.Device
                 if (newLocation.HorizontalAccuracy < 0) return;
                 if (Result?.Accuracy > newLocation.HorizontalAccuracy) return;
 
-                Result = new Services.GeoPosition
+                Result = new GeoPosition
                 {
                     Accuracy = newLocation.HorizontalAccuracy,
                     Altitude = newLocation.Altitude,

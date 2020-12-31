@@ -15,7 +15,7 @@ namespace Zebble.Device
             Android.Locations.Location BestLocation;
             Action OnFinished;
             float DesiredAccuracy;
-            internal TaskCompletionSource<Services.GeoPosition> CompletionSource = new TaskCompletionSource<Services.GeoPosition>();
+            internal TaskCompletionSource<GeoPosition> CompletionSource = new TaskCompletionSource<GeoPosition>();
             HashSet<string> ActiveProviders = new HashSet<string>();
 
             public GeoLocationSingleListener(float desiredAccuracy, int timeout, IEnumerable<string> activeProviders, Action onFinished)

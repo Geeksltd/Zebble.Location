@@ -12,7 +12,7 @@ namespace Zebble.Device
         static string[] Providers;
         static LocationManager Manager;
         static GeoLocationContinuousListener Listener;
-        static Services.GeoPosition LastPosition;
+        static GeoPosition LastPosition;
 
         static Location()
         {
@@ -31,17 +31,17 @@ namespace Zebble.Device
 
         public static Task<bool> IsEnabled() => Task.FromResult(EnabledProviders.Any());
 
-        static async Task<Services.GeoPosition> TryGetCurrentPosition(double desiredAccuracy, int timeout)
+        static async Task<GeoPosition> TryGetCurrentPosition(double desiredAccuracy, int timeout)
         {
             if (!IsTracking)
                 return await ObtainCurrentPosition(desiredAccuracy, timeout);
 
-            var source = new TaskCompletionSource<Services.GeoPosition>();
+            var source = new TaskCompletionSource<GeoPosition>();
 
             // We're already listening, just use the current listener
             if (LastPosition == null)
             {
-                Task gotPosition(Services.GeoPosition p)
+                Task gotPosition(GeoPosition p)
                 {
                     source.TrySetResult(p);
                     PositionChanged.RemoveHandler(gotPosition);
@@ -55,9 +55,9 @@ namespace Zebble.Device
             return await source.Task;
         }
 
-        static async Task<Services.GeoPosition> ObtainCurrentPosition(double desiredAccuracy, int timeout)
+        static async Task<GeoPosition> ObtainCurrentPosition(double desiredAccuracy, int timeout)
         {
-            var source = new TaskCompletionSource<Services.GeoPosition>();
+            var source = new TaskCompletionSource<GeoPosition>();
 
             GeoLocationSingleListener singleListener = null;
             singleListener = new GeoLocationSingleListener((float)desiredAccuracy, timeout, EnabledProviders,
@@ -121,7 +121,7 @@ namespace Zebble.Device
             return Task.FromResult(result: true);
         }
 
-        static Task OnListenerPositionChanged(Services.GeoPosition position)
+        static Task OnListenerPositionChanged(GeoPosition position)
         {
             if (!IsTracking) return Task.CompletedTask;
 
