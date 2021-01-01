@@ -7,7 +7,7 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble.Location</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>1.0.116.0</Version>
+    <Version>1.0.117.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -68,7 +68,7 @@
     <None Remove="Zebble-LicenseAgreement.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Olive.GeoLocation" Version="2.1.104" />
+    <PackageReference Include="Olive.GeoLocation" Version="2.1.105" />
     <PackageReference Include="Zebble" Version="4.5.423" />
     <PackageReference Include="Zebble.Sensors" Version="1.1.107" />
   </ItemGroup>
