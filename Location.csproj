@@ -7,7 +7,7 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble.Location</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>1.0.119.0</Version>
+    <Version>1.0.120.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -69,7 +69,7 @@
     <None Remove="Zebble-LicenseAgreement.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Zebble.Sensors" Version="1.1.109" />
+    <PackageReference Include="Zebble.Sensors" Version="1.1.110" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="iOS\" />
