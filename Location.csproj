@@ -1,12 +1,12 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
   <PropertyGroup>
-    <TargetFrameworks>Xamarin.iOS10;MonoAndroid90</TargetFrameworks>
+    <TargetFrameworks>Xamarin.iOS10;MonoAndroid13.0</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362</TargetFrameworks>
     <AssemblyName>Zebble.Location</AssemblyName>
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble.Location</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>1.0.122.0</Version>
+    <Version>1.0.123.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <DefineConstants>$(DefineConstants)</DefineConstants>
@@ -24,7 +24,7 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <Owners>Geeks Ltd</Owners>
     <Authors>Geeks Ltd</Authors>
-    <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
+    <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
     <DisableExtraReferences>true</DisableExtraReferences>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
@@ -58,16 +58,13 @@
     <Compile Include="iOS\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Shared\Class1.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="icon.png" />
     <None Remove="README.md" />
     <None Remove="Zebble-LicenseAgreement.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Zebble.Sensors" Version="1.1.112" />
+    <PackageReference Include="Zebble.Sensors" Version="1.1.113" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="iOS\" />
